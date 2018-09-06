@@ -1,0 +1,7 @@
+FROM google/cloud-sdk:215.0.0-alpine
+
+RUN apk --update add openjdk7-jre
+RUN mkdir -p /var/pubsub
+RUN gcloud components install beta pubsub-emulator --quiet
+
+CMD ["gcloud", "beta", "emulators", "pubsub", "start", "--host-port=0.0.0.0:8085", "--data-dir=/var/pubsub"]

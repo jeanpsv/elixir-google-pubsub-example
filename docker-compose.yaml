@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  pubsub:
+    build:
+      context: .
+      dockerfile: Dockerfile.pubsub
+    ports:
+      - "8085:8085"
+    volumes:
+      - "./volumes/pubsub:/var/pubsub"
