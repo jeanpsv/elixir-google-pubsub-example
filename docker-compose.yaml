@@ -1,6 +1,14 @@
 version: '3'
 
 services:
+  myapp:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ".:/app"
+    depends_on:
+      - pubsub
   pubsub:
     build:
       context: .
