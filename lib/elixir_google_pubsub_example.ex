@@ -18,7 +18,7 @@ defmodule ElixirGooglePubsubExample do
 
   def test do
     IO.puts "set project id"
-    project_id = "my-awesome-project"
+    project_id = System.get_env("GCP_PROJECT_ID")
     IO.puts "configure client"
     client = GoogleApi.PubSub.V1.Connection.new()
     IO.puts "get topics"
