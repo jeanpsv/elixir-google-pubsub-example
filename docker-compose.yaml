@@ -5,6 +5,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    environment:
+      - PUBSUB_HOST=http://pubsub:8085
+      - GCP_PROJECT_ID=my-awesome-project
     volumes:
       - ".:/app"
     depends_on:
