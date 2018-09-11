@@ -1,13 +1,34 @@
 version: '3'
 
 services:
-  myapp:
+  publisher1:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    command: ["mix", "server"]
     environment:
-      - PUBSUB_HOST=http://pubsub:8085
       - GCP_PROJECT_ID=my-awesome-project
+      - PUBSUB_HOST=http://pubsub:8085
+      - PUBSUB_TOPIC=my-awesome-topic
+      - PUBSUB_ROLE=publisher
+      - PUBLISHER_NAME=p1
+      - PUBLISHER_INTERVAL=1000
+    volumes:
+      - ".:/app"
+    depends_on:
+      - pubsub
+  publisher2:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: ["mix", "server"]
+    environment:
+      - GCP_PROJECT_ID=my-awesome-project
+      - PUBSUB_HOST=http://pubsub:8085
+      - PUBSUB_TOPIC=my-awesome-topic
+      - PUBSUB_ROLE=publisher
+      - PUBLISHER_NAME=p2
+      - PUBLISHER_INTERVAL=3000
     volumes:
       - ".:/app"
     depends_on:
