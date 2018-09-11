@@ -54,9 +54,9 @@ defmodule ElixirGooglePubsubExample.GooglePubsub do
     |> GoogleApi.PubSub.V1.Api.Projects.pubsub_projects_subscriptions_pull(project_id, subscription_name, [body: build_pull_request()])
   end
 
-  def ack_message(project_id, subscription_name, message_id) do
+  def ack_message(project_id, subscription_name, message) do
     create_new_pubsub_connection()
-    |> GoogleApi.PubSub.V1.Api.Projects.pubsub_projects_subscriptions_acknowledge(project_id, subscription_name, [body: build_acknowledge_request(message_id)])
+    |> GoogleApi.PubSub.V1.Api.Projects.pubsub_projects_subscriptions_acknowledge(project_id, subscription_name, [body: build_acknowledge_request(message)])
   end
 
   defp create_new_pubsub_connection, do: GoogleApi.PubSub.V1.Connection.new
@@ -77,7 +77,7 @@ defmodule ElixirGooglePubsubExample.GooglePubsub do
     }
   end
 
-  defp build_acknowledge_request(message_id) do
+  defp build_acknowledge_request(message) do
     %GoogleApi.PubSub.V1.Model.AcknowledgeRequest{
       ackIds: [message.ackId]
     }
