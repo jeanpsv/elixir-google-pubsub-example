@@ -7,10 +7,13 @@ defmodule ElixirGooglePubsubExample.Application do
 
   def start(_type, _args) do
     # List all child processes to be supervised
-    children = [
-      # Starts a worker by calling: ElixirGooglePubsubExample.Worker.start_link(arg)
-      # {ElixirGooglePubsubExample.Worker, arg},
-    ]
+    # Starts a worker by calling: ElixirGooglePubsubExample.Worker.start_link(arg)
+    # {ElixirGooglePubsubExample.Worker, arg},
+    children =
+      case Application.get_env(:elixir_google_pubsub_example, :pubsub_role) do
+        :publisher -> [{ElixirGooglePubsubExample.Publisher, []}]
+        _ -> []
+      end
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
