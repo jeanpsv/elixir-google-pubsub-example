@@ -50,8 +50,13 @@ defmodule ElixirGooglePubsubExample.GooglePubsub do
   end
 
   def pull_message(project_id, subscription_name) do
-    create_new_pubsub_connection()
-    |> GoogleApi.PubSub.V1.Api.Projects.pubsub_projects_subscriptions_pull(project_id, subscription_name, [body: build_pull_request()])
+    {:ok, response} =
+      create_new_pubsub_connection()
+      |> GoogleApi.PubSub.V1.Api.Projects.pubsub_projects_subscriptions_pull(project_id, subscription_name, [body: build_pull_request()])
+    case response do
+      %GoogleApi.PubSub.V1.Model.PullResponse{receivedMessages: nil} -> {:ok, :no_messages}
+      %GoogleApi.PubSub.V1.Model.PullResponse{receivedMessages: messages} -> {:ok, extract_messages(messages)}
+    end
   end
 
   def ack_message(project_id, subscription_name, message) do
@@ -82,4 +87,10 @@ defmodule ElixirGooglePubsubExample.GooglePubsub do
       ackIds: [message.ackId]
     }
   end
+
+  defp extract_messages([%GoogleApi.PubSub.V1.Model.ReceivedMessage{message: message} | others]) do
+    [message | extract_messages(others)]
+  end
+
+  defp extract_messages([]), do: []
 end
