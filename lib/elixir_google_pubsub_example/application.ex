@@ -12,6 +12,7 @@ defmodule ElixirGooglePubsubExample.Application do
     children =
       case Application.get_env(:elixir_google_pubsub_example, :pubsub_role) do
         :publisher -> [{ElixirGooglePubsubExample.Publisher, []}]
+        :subscriber -> [{ElixirGooglePubsubExample.Subscriber, []}]
         _ -> []
       end
 
